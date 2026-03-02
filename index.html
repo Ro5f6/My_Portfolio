@@ -3,393 +3,687 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rohith Sai Gude - Software Engineer</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>Rohith Sai Gude - AI Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        :root {
+            --bg: #08090a;
+            --surface: #111214;
+            --surface2: #1a1c1f;
+            --border: #2a2d32;
+            --accent: #00e5ff;
+            --accent2: #7c3aed;
+            --text: #e8eaed;
+            --muted: #8b949e;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Space Grotesk', sans-serif;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(8,9,10,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 2rem;
+            height: 64px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logo {
+            font-family: var(--mono);
+            font-size: 1rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+        .logo span { color: var(--muted); }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--muted);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+        .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--text); transition: 0.3s; }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            padding-top: 64px;
+            display: flex; align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(ellipse 60% 50% at 70% 40%, rgba(0,229,255,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 40% at 20% 70%, rgba(124,58,237,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .grid-overlay {
+            position: absolute; inset: 0; pointer-events: none;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+        .hero-inner {
+            max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+            position: relative; z-index: 1;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(0,229,255,0.08);
+            border: 1px solid rgba(0,229,255,0.2);
+            border-radius: 100px;
+            padding: 6px 16px;
+            font-family: var(--mono);
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+        .hero-badge::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+        .hero h1 em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .hero-role {
+            font-family: var(--mono);
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+        }
+        .hero-role strong { color: var(--accent); }
+        .hero-desc {
+            font-size: 1.05rem;
+            color: #a8b0b8;
+            max-width: 600px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+        .hero-stats {
+            display: flex; gap: 3rem;
+            margin-bottom: 2.5rem;
+        }
+        .stat-item { }
+        .stat-num {
+            font-size: 2rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), #0099cc);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+        .btn-primary {
+            background: var(--accent); color: #000;
+            padding: 12px 28px; border-radius: 6px;
+            font-weight: 600; font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .btn-primary:hover { background: #33eaff; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,229,255,0.25); }
+        .btn-outline {
+            border: 1px solid var(--border); color: var(--text);
+            padding: 12px 28px; border-radius: 6px;
+            font-weight: 500; font-size: 0.95rem;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* Sections */
+        section { padding: 6rem 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        .section-label {
+            font-family: var(--mono); font-size: 0.8rem; font-weight: 500;
+            color: var(--accent); text-transform: uppercase; letter-spacing: 0.15em;
+            margin-bottom: 0.75rem;
+        }
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700; margin-bottom: 1rem;
+        }
+        .section-sub { color: var(--muted); font-size: 1rem; margin-bottom: 3.5rem; }
+        .divider { width: 48px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 3.5rem; }
+
+        /* About */
+        .about-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+        }
+        .about-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+        }
+        .about-card h3 {
+            font-size: 1rem; font-weight: 600;
+            color: var(--accent);
+            font-family: var(--mono);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase; letter-spacing: 0.1em;
+        }
+        .edu-item { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+        .edu-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .edu-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .edu-item p { font-size: 0.85rem; color: var(--muted); }
+        .edu-item .year { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); margin-top: 4px; display: block; }
+
+        /* Skills */
+        .skills-section { margin-top: 0; }
+        .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .skill-group h4 {
+            font-family: var(--mono); font-size: 0.75rem;
+            color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag {
+            background: rgba(0,229,255,0.06);
+            border: 1px solid rgba(0,229,255,0.15);
+            color: var(--text);
+            font-size: 0.78rem; padding: 4px 10px; border-radius: 4px;
+            font-family: var(--mono);
+        }
+
+        /* Experience */
+        .exp-section { background: var(--surface); }
+        .timeline { position: relative; }
+        .timeline::before {
+            content: '';
+            position: absolute; left: 20px; top: 0; bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent), var(--accent2), transparent);
+        }
+        .exp-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 3rem;
+        }
+        .exp-item:last-child { margin-bottom: 0; }
+        .exp-dot {
+            position: absolute; left: 12px; top: 6px;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: var(--bg);
+            border: 2px solid var(--accent);
+        }
+        .exp-dot.purple { border-color: var(--accent2); }
+        .exp-card {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            transition: border-color 0.2s;
+        }
+        .exp-card:hover { border-color: rgba(0,229,255,0.3); }
+        .exp-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.5rem; }
+        .exp-title { font-size: 1.1rem; font-weight: 700; }
+        .exp-date { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); background: rgba(0,229,255,0.08); padding: 3px 10px; border-radius: 100px; white-space: nowrap; }
+        .exp-date.purple { color: #a78bfa; background: rgba(124,58,237,0.1); }
+        .exp-company { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
+        .exp-company strong { color: var(--text); }
+        .exp-list { list-style: none; margin-bottom: 1.25rem; }
+        .exp-list li {
+            font-size: 0.9rem; color: #a8b0b8;
+            padding: 4px 0 4px 1.25rem;
+            position: relative;
+        }
+        .exp-list li::before {
+            content: '▸';
+            position: absolute; left: 0;
+            color: var(--accent); font-size: 0.75rem;
+        }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tech-tag {
+            background: rgba(124,58,237,0.1);
+            border: 1px solid rgba(124,58,237,0.2);
+            color: #a78bfa;
+            font-size: 0.75rem; padding: 3px 10px; border-radius: 4px;
+            font-family: var(--mono);
+        }
+
+        /* Projects */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+        .proj-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            display: flex; flex-direction: column;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .proj-card:hover { border-color: rgba(0,229,255,0.25); transform: translateY(-2px); }
+        .proj-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .proj-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .proj-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; flex: 1; margin-bottom: 1.25rem; }
+        .proj-links { display: flex; gap: 0.75rem; }
+        .proj-link {
+            font-size: 0.82rem; font-family: var(--mono);
+            color: var(--accent); text-decoration: none;
+            border: 1px solid rgba(0,229,255,0.2);
+            padding: 4px 12px; border-radius: 4px;
+            transition: all 0.2s;
+        }
+        .proj-link:hover { background: rgba(0,229,255,0.08); }
+
+        /* Contact */
+        .contact-section { background: var(--surface); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+        .contact-items { display: flex; flex-direction: column; gap: 1.5rem; }
+        .contact-item { display: flex; gap: 1rem; align-items: flex-start; }
+        .contact-icon {
+            width: 44px; height: 44px; border-radius: 10px;
+            background: rgba(0,229,255,0.08);
+            border: 1px solid rgba(0,229,255,0.15);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; flex-shrink: 0;
+        }
+        .contact-text h4 { font-size: 0.85rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem; }
+        .contact-text a, .contact-text p { color: var(--text); text-decoration: none; font-size: 0.95rem; }
+        .contact-text a:hover { color: var(--accent); }
+        .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+        .form-input, .form-textarea {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-input:focus, .form-textarea:focus { border-color: var(--accent); }
+        .form-textarea { resize: vertical; min-height: 120px; }
+
+        /* Footer */
+        footer {
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+        footer p { font-size: 0.85rem; color: var(--muted); }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* Fade in */
+        .fade-up {
+            opacity: 0; transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; gap: 1rem; }
+            .nav-links.open { display: flex; }
+            .nav-toggle { display: flex; }
+            .about-grid { grid-template-columns: 1fr; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .hero-stats { gap: 2rem; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-logo">
-                <span class="logo-text">Rohith Sai Gude</span>
+
+<!-- Nav -->
+<nav id="navbar">
+    <div class="nav-inner">
+        <a href="#home" class="logo">rohith<span>.dev</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#experience">Experience</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-toggle" id="nav-toggle">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section id="home" class="hero">
+    <div class="grid-overlay"></div>
+    <div class="hero-inner">
+        <div class="hero-badge">Available for opportunities</div>
+        <h1>Rohith Sai Gude<br><em>AI Engineer</em></h1>
+        <p class="hero-role">@ <strong>Intuit</strong> &nbsp;·&nbsp; MN, United States</p>
+        <p class="hero-desc">
+            AI Engineer with 4+ years of experience building production-grade machine learning systems,
+            NLP pipelines, and scalable data infrastructure. Specializing in MLOps, forecasting,
+            and risk analytics that drive measurable business outcomes.
+        </p>
+        <div class="hero-stats">
+            <div class="stat-item">
+                <div class="stat-num">4+</div>
+                <div class="stat-label">Years Experience</div>
             </div>
-            <div class="nav-menu" id="nav-menu">
-                <a href="#home" class="nav-link">Home</a>
-                <a href="#about" class="nav-link">About</a>
-                <a href="#experience" class="nav-link">Experience</a>
-                <a href="#projects" class="nav-link">Projects</a>
-                <a href="#contact" class="nav-link">Contact</a>
+            <div class="stat-item">
+                <div class="stat-num">$120M+</div>
+                <div class="stat-label">Revenue Impact</div>
             </div>
-            <div class="nav-toggle" id="nav-toggle">
-                <span class="bar"></span>
-                <span class="bar"></span>
-                <span class="bar"></span>
+            <div class="stat-item">
+                <div class="stat-num">90%+</div>
+                <div class="stat-label">Model Precision</div>
             </div>
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        Hi, I'm Rohith Sai Gude
-                    </h1>
-                    <h2 class="hero-subtitle">Software Engineer & Full-Stack Developer</h2>
-                    <p class="hero-description">
-                        Software Engineer with 2+ years of experience developing and deploying scalable applications, managing backend systems, and ensuring high availability in cloud environments. Passionate about solving real-world problems through reliable and well-documented code.
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#contact" class="btn btn-primary">Get In Touch</a>
-                        <a href="#projects" class="btn btn-secondary">View Projects</a>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <div class="image-placeholder">
-                        <div class="placeholder-content">
-                            <span class="placeholder-initials">RG</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="hero-cta">
+            <a href="#contact" class="btn-primary">Get In Touch →</a>
+            <a href="#experience" class="btn-outline">View Experience</a>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">About Me</h2>
-                <p class="section-subtitle">Get to know more about my background and expertise</p>
+<!-- About -->
+<section id="about">
+    <div class="container">
+        <div class="section-label">Background</div>
+        <h2 class="section-title">About Me</h2>
+        <div class="divider"></div>
+        <div class="about-grid fade-up">
+            <div>
+                <div class="about-card" style="margin-bottom:1.5rem">
+                    <h3>// Education</h3>
+                    <div class="edu-item">
+                        <h4>M.S. in Computer Science</h4>
+                        <p>St. Cloud State University, MN, USA</p>
+                        <span class="year">2025</span>
+                    </div>
+                    <div class="edu-item">
+                        <h4>B.Tech in Computer Science & Engineering</h4>
+                        <p>Jawaharlal Nehru Technological University, Hyderabad, India</p>
+                        <span class="year">2019</span>
+                    </div>
+                </div>
+                <div class="about-card">
+                    <h3>// Contact</h3>
+                    <div style="display:flex;flex-direction:column;gap:0.75rem">
+                        <div><span style="color:var(--muted);font-size:0.82rem;font-family:var(--mono)">EMAIL</span><br><a href="mailto:rohith.g@mymailjob.com" style="color:var(--text);text-decoration:none;font-size:0.9rem">rohith.g@mymailjob.com</a></div>
+                        <div><span style="color:var(--muted);font-size:0.82rem;font-family:var(--mono)">PHONE</span><br><span style="font-size:0.9rem">+1 (919) 885-9891</span></div>
+                        <div><span style="color:var(--muted);font-size:0.82rem;font-family:var(--mono)">LOCATION</span><br><span style="font-size:0.9rem">Minnesota, United States</span></div>
+                        <div><a href="https://www.linkedin.com/in/rohith-sai-gude-18963a172/" target="_blank" style="color:var(--accent);text-decoration:none;font-size:0.9rem;font-family:var(--mono)">→ LinkedIn Profile</a></div>
+                    </div>
+                </div>
             </div>
-            
-            <div class="about-content">
-                <div class="about-info">
-                    <div class="info-card">
-                        <h3>Education</h3>
-                        <div class="education-item">
-                            <h4>Master of Science in Computer Science</h4>
-                            <p>Saint Cloud State University, MN</p>
-                            <span class="date">May 2025</span>
-                        </div>
-                        <div class="education-item">
-                            <h4>Bachelor of Technology in Computer Science</h4>
-                            <p>Malla Reddy Institute of Technology and Sciences, India</p>
-                            <span class="date">August 2022</span>
+            <div class="about-card skills-section">
+                <h3>// Technical Skills</h3>
+                <div class="skills-grid">
+                    <div class="skill-group">
+                        <h4>Programming & Data</h4>
+                        <div class="tags">
+                            <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">R</span>
+                            <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Scikit-learn</span>
+                            <span class="tag">TensorFlow</span>
                         </div>
                     </div>
-
-                    <div class="info-card">
-                        <h3>Leadership</h3>
-                        <div class="leadership-item">
-                            <h4>President</h4>
-                            <p>Cloud Computing Club (3C)</p>
-                            <span>Saint Cloud State University</span>
-                        </div>
-                        <div class="leadership-item">
-                            <h4>Chairman</h4>
-                            <p>ISTE India Chapter</p>
+                    <div class="skill-group">
+                        <h4>ML & AI</h4>
+                        <div class="tags">
+                            <span class="tag">NLP</span><span class="tag">Time Series</span><span class="tag">Ensemble Models</span>
+                            <span class="tag">A/B Testing</span><span class="tag">RAG</span><span class="tag">Bayesian Methods</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="skills-section">
-                    <h3>Technical Skills</h3>
-                    <div class="skills-grid">
-                        <div class="skill-category">
-                            <h4>Languages</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Java</span>
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">JavaScript</span>
-                                <span class="skill-tag">SQL</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>Cloud & Infrastructure</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">AWS (EC2, S3)</span>
-                                <span class="skill-tag">GCP</span>
-                                <span class="skill-tag">Firebase</span>
-                                <span class="skill-tag">Docker</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>Databases</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">PostgreSQL</span>
-                                <span class="skill-tag">MySQL</span>
-                                <span class="skill-tag">MongoDB</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>Frameworks & Tools</h4>
-                            <div class="skill-tags">
-                                <span class="skill-tag">Spring Boot</span>
-                                <span class="skill-tag">React.js</span>
-                                <span class="skill-tag">Flask</span>
-                                <span class="skill-tag">Node.js</span>
-                                <span class="skill-tag">Git</span>
-                                <span class="skill-tag">CI/CD</span>
-                                <span class="skill-tag">JIRA</span>
-                                <span class="skill-tag">Datadog</span>
-                            </div>
+                    <div class="skill-group">
+                        <h4>Cloud & MLOps</h4>
+                        <div class="tags">
+                            <span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">Docker</span>
+                            <span class="tag">Kubernetes</span><span class="tag">MLflow</span><span class="tag">CI/CD</span><span class="tag">Airflow</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="certifications">
-                    <h3>Certifications</h3>
-                    <div class="cert-list">
-                        <div class="cert-item">
-                            <h4>AWS Cloud Practitioner</h4>
-                            <p>AWS · In Progress (2025)</p>
+                    <div class="skill-group">
+                        <h4>Data Engineering</h4>
+                        <div class="tags">
+                            <span class="tag">Snowflake</span><span class="tag">Spark</span><span class="tag">Databricks</span>
+                            <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">ETL/ELT</span>
                         </div>
-                        <div class="cert-item">
-                            <h4>Python for Everyone</h4>
-                            <p>University of Michigan · 2023</p>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Visualization</h4>
+                        <div class="tags">
+                            <span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Python Viz</span>
                         </div>
-                        <div class="cert-item">
-                            <h4>Python DS Certificate</h4>
-                            <p>University of Michigan · 2023</p>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Big Data</h4>
+                        <div class="tags">
+                            <span class="tag">Hadoop</span><span class="tag">Distributed Computing</span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Experience Section -->
-    <section id="experience" class="experience">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Professional Experience</h2>
-                <p class="section-subtitle">My journey in software development</p>
-            </div>
+<!-- Experience -->
+<section id="experience" class="exp-section">
+    <div class="container">
+        <div class="section-label">Career</div>
+        <h2 class="section-title">Professional Experience</h2>
+        <div class="divider"></div>
+        <div class="timeline fade-up">
 
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>Software Engineer Fellow</h3>
-                            <div class="company-info">
-                                <span class="company">Headstarter</span>
-                                <span class="location">Remote, USA</span>
-                                <span class="date">July 2024 - September 2024</span>
-                            </div>
-                        </div>
-                        <ul class="responsibilities">
-                            <li>Developed scalable web applications integrating AI services via REST APIs</li>
-                            <li>Monitored production environments using CI/CD tools and automated deployments with Vercel</li>
-                            <li>Built and maintained backend systems on AWS infrastructure</li>
-                            <li>Implemented unit testing protocols using Jest, achieving a 20% reduction in post-release defects</li>
-                            <li>Orchestrated software development lifecycle through Agile methodologies, resulting in 15% increase in delivery speed</li>
-                            <li>Spearheaded integration of troubleshooting tools, streamlining issue resolution by 30%</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span class="tech-tag">React</span>
-                            <span class="tech-tag">Node.js</span>
-                            <span class="tech-tag">AWS</span>
-                            <span class="tech-tag">CI/CD</span>
-                            <span class="tech-tag">Jest</span>
-                        </div>
+            <!-- Intuit -->
+            <div class="exp-item">
+                <div class="exp-dot"></div>
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div class="exp-title">AI Engineer</div>
+                        <div class="exp-date">Feb 2025 – Present</div>
                     </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>Graduate Assistant – Software Development</h3>
-                            <div class="company-info">
-                                <span class="company">Saint Cloud State University</span>
-                                <span class="location">MN</span>
-                                <span class="date">August 2023 - May 2024</span>
-                            </div>
-                        </div>
-                        <ul class="responsibilities">
-                            <li>Mentored students in Python programming and data structures</li>
-                            <li>Assisted in Django-based application development and system integration</li>
-                            <li>Implemented GitHub workflows for version control and team collaboration</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Django</span>
-                            <span class="tech-tag">GitHub</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-marker"></div>
-                    <div class="timeline-content">
-                        <div class="timeline-header">
-                            <h3>Software Developer Intern</h3>
-                            <div class="company-info">
-                                <span class="company">Subramanyam Associates</span>
-                                <span class="location">Hyderabad, India</span>
-                                <span class="date">January 2022 - December 2022</span>
-                            </div>
-                        </div>
-                        <ul class="responsibilities">
-                            <li>Designed and implemented backend modules for staff and tax management systems</li>
-                            <li>Wrote efficient SQL queries and RESTful services to handle enterprise reporting needs</li>
-                            <li>Diagnosed and resolved production issues and contributed to system scalability</li>
-                        </ul>
-                        <div class="tech-stack">
-                            <span class="tech-tag">Java</span>
-                            <span class="tech-tag">SQL</span>
-                            <span class="tech-tag">REST API</span>
-                        </div>
+                    <div class="exp-company"><strong>Intuit</strong> &nbsp;·&nbsp; USA</div>
+                    <ul class="exp-list">
+                        <li>Directed scalable ML pipelines using Python, SQL, Airflow, and cloud services, supporting financial intelligence initiatives exceeding <strong>$120M in annual revenue impact</strong>.</li>
+                        <li>Applied advanced NLP for customer feedback classification, raising operational response efficiency by <strong>31%</strong>.</li>
+                        <li>Tuned ensemble models to achieve over <strong>90% precision and recall</strong> for risk analytics.</li>
+                        <li>Implemented automated drift monitoring and statistical validation, avoiding ~<strong>$8.5M in annual revenue risk</strong>.</li>
+                        <li>Deployed ML models using Docker, Kubernetes, and MLflow with controlled versioning and reproducibility.</li>
+                        <li>Streamlined CI/CD pipelines, reducing release cycles to under <strong>48 hours</strong>.</li>
+                        <li>Conducted A/B experiments on pricing and feature impact, driving a <strong>14% increase in customer conversion rates</strong>.</li>
+                        <li>Engineered enterprise-grade ETL/ELT workflows on Snowflake, cutting data processing latency by <strong>38%</strong>.</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span><span class="tech-tag">SQL</span><span class="tech-tag">NLP</span>
+                        <span class="tech-tag">Airflow</span><span class="tech-tag">Snowflake</span><span class="tech-tag">Docker</span>
+                        <span class="tech-tag">Kubernetes</span><span class="tech-tag">MLflow</span><span class="tech-tag">Tableau</span>
+                        <span class="tech-tag">A/B Testing</span><span class="tech-tag">CI/CD</span>
                     </div>
                 </div>
             </div>
+
+            <!-- Borland -->
+            <div class="exp-item">
+                <div class="exp-dot purple"></div>
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div class="exp-title">Data Scientist</div>
+                        <div class="exp-date purple">Dec 2019 – Nov 2022</div>
+                    </div>
+                    <div class="exp-company"><strong>Borland Software</strong> &nbsp;·&nbsp; India</div>
+                    <ul class="exp-list">
+                        <li>Built predictive churn and customer segmentation models, contributing to a <strong>19% reduction in customer attrition</strong>.</li>
+                        <li>Processed high-volume datasets using Spark and Databricks, accelerating distributed computations by <strong>45%</strong>.</li>
+                        <li>Implemented NLP-driven text mining, improving document classification by <strong>33%</strong>.</li>
+                        <li>Supported marketing mix modeling and ROI analysis, improving campaign effectiveness by <strong>22%</strong>.</li>
+                        <li>Transitioned analytics workloads to cloud-ready architectures, reducing costs by <strong>28%</strong>.</li>
+                        <li>Applied regression, classification, and hypothesis testing to guide leadership decisions.</li>
+                    </ul>
+                    <div class="tech-tags">
+                        <span class="tech-tag">Python</span><span class="tech-tag">Spark</span><span class="tech-tag">Databricks</span>
+                        <span class="tech-tag">NLP</span><span class="tech-tag">Scikit-learn</span><span class="tech-tag">Tableau</span>
+                        <span class="tech-tag">SQL</span><span class="tech-tag">GitHub</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Featured Projects</h2>
-                <p class="section-subtitle">Some of my recent work and achievements</p>
-            </div>
+<!-- Projects -->
+<section id="projects">
+    <div class="container">
+        <div class="section-label">Work</div>
+        <h2 class="section-title">Featured Projects</h2>
+        <div class="divider"></div>
+        <div class="projects-grid fade-up">
 
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Inventory Management System</h3>
-                        <span class="project-org">Headstarter.ai</span>
-                    </div>
-                    <p class="project-description">
-                        Created a cloud-based inventory app using React, Node.js, and Firebase. Integrated machine learning algorithms to enhance demand forecasting accuracy and optimize inventory turnover, leading to improved supply chain efficiency.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Node.js</span>
-                        <span class="tech-tag">Firebase</span>
-                        <span class="tech-tag">Machine Learning</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link">View Project</a>
-                        <a href="#" class="project-link">GitHub</a>
-                    </div>
+            <div class="proj-card">
+                <div class="proj-icon">🧠</div>
+                <h3>Fake News Detection System</h3>
+                <p>Text classification system using Python and scikit-learn with advanced NLP techniques. Achieved <strong>96% detection accuracy</strong> using TF-IDF feature engineering and ensemble classifiers.</p>
+                <div class="tech-tags" style="margin-bottom:1rem">
+                    <span class="tech-tag">Python</span><span class="tech-tag">scikit-learn</span><span class="tech-tag">NLP</span><span class="tech-tag">TF-IDF</span>
                 </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Fake News Detection App</h3>
-                        <span class="project-org">St. Cloud State University</span>
-                    </div>
-                    <p class="project-description">
-                        Built a text classification system using Python and scikit-learn. Engineered a fake news detection application utilizing machine learning algorithms, enhancing detection accuracy to 96% through advanced NLP techniques.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">scikit-learn</span>
-                        <span class="tech-tag">NLP</span>
-                        <span class="tech-tag">TF-IDF</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link">View Project</a>
-                        <a href="#" class="project-link">GitHub</a>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-header">
-                        <h3>Flashcard Generator with Payment Integration</h3>
-                        <span class="project-org">Headstarter.ai</span>
-                    </div>
-                    <p class="project-description">
-                        Developed a flashcard app using Next.js and Firebase. Streamlined backend API interactions and frontend data synchronization. Engineered Stripe payment integration to ensure secure transactions.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">Next.js</span>
-                        <span class="tech-tag">Firebase</span>
-                        <span class="tech-tag">Stripe</span>
-                        <span class="tech-tag">Payment API</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="#" class="project-link">View Project</a>
-                        <a href="#" class="project-link">GitHub</a>
-                    </div>
+                <div class="proj-links">
+                    <a href="#" class="proj-link">GitHub →</a>
                 </div>
             </div>
+
+            <div class="proj-card">
+                <div class="proj-icon">📦</div>
+                <h3>AI-Powered Inventory Management</h3>
+                <p>Cloud-based inventory app integrating machine learning for demand forecasting, optimizing inventory turnover and supply chain efficiency at scale.</p>
+                <div class="tech-tags" style="margin-bottom:1rem">
+                    <span class="tech-tag">React</span><span class="tech-tag">Node.js</span><span class="tech-tag">Firebase</span><span class="tech-tag">ML Forecasting</span>
+                </div>
+                <div class="proj-links">
+                    <a href="#" class="proj-link">GitHub →</a>
+                </div>
+            </div>
+
+            <div class="proj-card">
+                <div class="proj-icon">💳</div>
+                <h3>Flashcard Generator with Payments</h3>
+                <p>Full-stack flashcard application with Stripe payment integration. Engineered backend API interactions and frontend data synchronization for seamless UX.</p>
+                <div class="tech-tags" style="margin-bottom:1rem">
+                    <span class="tech-tag">Next.js</span><span class="tech-tag">Firebase</span><span class="tech-tag">Stripe</span>
+                </div>
+                <div class="proj-links">
+                    <a href="#" class="proj-link">GitHub →</a>
+                </div>
+            </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <div class="section-header">
-                <h2 class="section-title">Get In Touch</h2>
-                <p class="section-subtitle">Let's discuss opportunities and collaboration</p>
-            </div>
-
-            <div class="contact-content">
-                <div class="contact-info">
+<!-- Contact -->
+<section id="contact" class="contact-section">
+    <div class="container">
+        <div class="section-label">Connect</div>
+        <h2 class="section-title">Get In Touch</h2>
+        <div class="divider"></div>
+        <div class="contact-grid fade-up">
+            <div>
+                <p style="color:var(--muted);margin-bottom:2rem;line-height:1.8">
+                    I'm always open to discussing new opportunities, collaborations, or just talking about AI and data engineering. Feel free to reach out!
+                </p>
+                <div class="contact-items">
                     <div class="contact-item">
                         <div class="contact-icon">📧</div>
-                        <div class="contact-details">
+                        <div class="contact-text">
                             <h4>Email</h4>
-                            <p>guderohithsai@gmail.com</p>
+                            <a href="mailto:rohith.g@mymailjob.com">rohith.g@mymailjob.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-text">
+                            <h4>Phone</h4>
+                            <p>+1 (919) 885-9891</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon">📍</div>
-                        <div class="contact-details">
+                        <div class="contact-text">
                             <h4>Location</h4>
-                            <p>Saint Cloud, MN</p>
+                            <p>Minnesota, United States</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon">💼</div>
-                        <div class="contact-details">
-                            <h4>Status</h4>
-                            <p>Open to new opportunities</p>
+                        <div class="contact-text">
+                            <h4>LinkedIn</h4>
+                            <a href="https://www.linkedin.com/in/rohith-sai-gude-18963a172/" target="_blank">linkedin.com/in/rohith-sai-gude</a>
                         </div>
                     </div>
                 </div>
-
-                <div class="contact-form">
-                    <form id="contact-form">
-                        <div class="form-group">
-                            <input type="text" id="name" name="name" placeholder="Your Name" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="email" id="email" name="email" placeholder="Your Email" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" id="subject" name="subject" placeholder="Subject" required>
-                        </div>
-                        <div class="form-group">
-                            <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Send Message</button>
-                    </form>
-                </div>
+            </div>
+            <div class="contact-form">
+                <input type="text" class="form-input" placeholder="Your Name">
+                <input type="email" class="form-input" placeholder="Your Email">
+                <input type="text" class="form-input" placeholder="Subject">
+                <textarea class="form-textarea" placeholder="Your Message"></textarea>
+                <button onclick="this.textContent='Message Sent ✓';this.style.background='#00c851'" class="btn-primary" style="width:fit-content;border:none;cursor:pointer">Send Message →</button>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2024 Rohith Sai Gude. All rights reserved.</p>
-                <div class="social-links">
-                    <a href="https://www.linkedin.com/in/rohith-sai-gude-18963a172/" class="social-link">LinkedIn</a>
-                    <a href="https://github.com/Ro5f6" class="social-link">GitHub</a>
-                    <a href="mailto:guderohithsai@gmail.com" class="social-link">Email</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+<!-- Footer -->
+<footer>
+    <p>© 2025 Rohith Sai Gude &nbsp;·&nbsp; AI Engineer at <a href="https://www.intuit.com" target="_blank">Intuit</a> &nbsp;·&nbsp;
+    <a href="https://github.com/Ro5f6" target="_blank">GitHub</a> &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/rohith-sai-gude-18963a172/" target="_blank">LinkedIn</a></p>
+</footer>
 
-    <script src="script.js"></script>
+<script>
+    // Mobile nav
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+        document.getElementById('nav-links').classList.toggle('open');
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.addEventListener('click', () => document.getElementById('nav-links').classList.remove('open'));
+    });
+
+    // Fade-up on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+    // Navbar shadow on scroll
+    window.addEventListener('scroll', () => {
+        document.getElementById('navbar').style.boxShadow =
+            window.scrollY > 40 ? '0 4px 32px rgba(0,0,0,0.4)' : 'none';
+    });
+</script>
 </body>
 </html>
