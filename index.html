@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rohith Sai Gude - AI Engineer</title>
+    <meta name="description" content="Rohith Sai Gude — AI Engineer with 4+ years of experience in machine learning, NLP, MLOps, and scalable data engineering. Building agentic AI and RAG systems in production.">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,6 +34,13 @@
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+        /* Scroll progress */
+        .scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 0;
+            background: linear-gradient(90deg, var(--accent), var(--accent2));
+            z-index: 1100; transition: width 0.1s linear;
+        }
 
         /* Nav */
         nav {
@@ -64,7 +72,7 @@
             text-transform: uppercase;
             transition: color 0.2s;
         }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
         .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
         .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--text); transition: 0.3s; }
 
@@ -131,15 +139,14 @@
         .hero-desc {
             font-size: 1.05rem;
             color: #a8b0b8;
-            max-width: 600px;
+            max-width: 640px;
             margin-bottom: 2.5rem;
             line-height: 1.8;
         }
         .hero-stats {
-            display: flex; gap: 3rem;
+            display: flex; gap: 3rem; flex-wrap: wrap;
             margin-bottom: 2.5rem;
         }
-        .stat-item { }
         .stat-num {
             font-size: 2rem; font-weight: 700;
             background: linear-gradient(135deg, var(--accent), #0099cc);
@@ -177,7 +184,7 @@
             font-size: clamp(1.8rem, 4vw, 2.5rem);
             font-weight: 700; margin-bottom: 1rem;
         }
-        .section-sub { color: var(--muted); font-size: 1rem; margin-bottom: 3.5rem; }
+        .section-sub { color: var(--muted); font-size: 1rem; margin-bottom: 3.5rem; max-width: 640px; }
         .divider { width: 48px; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; margin-bottom: 3.5rem; }
 
         /* About */
@@ -197,15 +204,16 @@
             margin-bottom: 1.5rem;
             text-transform: uppercase; letter-spacing: 0.1em;
         }
+        .about-lead { font-size: 0.95rem; color: #a8b0b8; line-height: 1.8; margin-bottom: 1.25rem; }
+        .about-lead:last-child { margin-bottom: 0; }
         .edu-item { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
         .edu-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
         .edu-item h4 { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; }
         .edu-item p { font-size: 0.85rem; color: var(--muted); }
-        .edu-item .year { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); margin-top: 4px; display: block; }
+        .edu-item .field { font-family: var(--mono); font-size: 0.78rem; color: var(--accent); margin-top: 4px; display: block; }
 
         /* Skills */
-        .skills-section { margin-top: 0; }
-        .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.75rem 2.5rem; }
         .skill-group h4 {
             font-family: var(--mono); font-size: 0.75rem;
             color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em;
@@ -218,7 +226,9 @@
             color: var(--text);
             font-size: 0.78rem; padding: 4px 10px; border-radius: 4px;
             font-family: var(--mono);
+            transition: all 0.2s;
         }
+        .tag:hover { background: rgba(0,229,255,0.12); border-color: rgba(0,229,255,0.35); }
 
         /* Experience */
         .exp-section { background: var(--surface); }
@@ -289,9 +299,15 @@
         }
         .proj-card:hover { border-color: rgba(0,229,255,0.25); transform: translateY(-2px); }
         .proj-icon { font-size: 2rem; margin-bottom: 1rem; }
-        .proj-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .proj-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; flex: 1; margin-bottom: 1.25rem; }
-        .proj-links { display: flex; gap: 0.75rem; }
+        .proj-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.75rem; line-height: 1.35; }
+        .proj-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+        .proj-list { list-style: none; margin-bottom: 1.25rem; flex: 1; }
+        .proj-list li {
+            font-size: 0.84rem; color: #a8b0b8;
+            padding: 3px 0 3px 1.1rem; position: relative;
+        }
+        .proj-list li::before { content: '▹'; position: absolute; left: 0; color: var(--accent); font-size: 0.75rem; }
+        .proj-links { display: flex; gap: 0.75rem; margin-top: auto; }
         .proj-link {
             font-size: 0.82rem; font-family: var(--mono);
             color: var(--accent); text-decoration: none;
@@ -361,12 +377,16 @@
 </head>
 <body>
 
+<div class="scroll-progress" id="scroll-progress"></div>
+
 <!-- Nav -->
 <nav id="navbar">
     <div class="nav-inner">
         <a href="#home" class="logo">rohith<span>.dev</span></a>
         <ul class="nav-links" id="nav-links">
+            <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
+            <li><a href="#skills">Skills</a></li>
             <li><a href="#experience">Experience</a></li>
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
@@ -385,9 +405,10 @@
         <h1>Rohith Sai Gude<br><em>AI Engineer</em></h1>
         <p class="hero-role">@ <strong>Intuit</strong> &nbsp;·&nbsp; MN, United States</p>
         <p class="hero-desc">
-            AI Engineer with 4+ years of experience building production-grade machine learning systems,
-            NLP pipelines, and scalable data infrastructure. Specializing in MLOps, forecasting,
-            and risk analytics that drive measurable business outcomes.
+            AI Engineer with 4+ years of experience in machine learning, statistical modeling, and
+            data engineering across large-scale production environments. Skilled in Python, SQL, cloud
+            platforms, ETL pipelines, MLOps, and distributed data processing — with expertise in
+            forecasting, NLP, experimentation, agentic AI, and risk analytics.
         </p>
         <div class="hero-stats">
             <div class="stat-item">
@@ -399,13 +420,17 @@
                 <div class="stat-label">Revenue Impact</div>
             </div>
             <div class="stat-item">
-                <div class="stat-num">90%+</div>
-                <div class="stat-label">Model Precision</div>
+                <div class="stat-num">$8.5M</div>
+                <div class="stat-label">Risk Avoided</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-num">70%</div>
+                <div class="stat-label">Faster Response</div>
             </div>
         </div>
         <div class="hero-cta">
             <a href="#contact" class="btn-primary">Get In Touch →</a>
-            <a href="#experience" class="btn-outline">View Experience</a>
+            <a href="#projects" class="btn-outline">View Projects</a>
         </div>
     </div>
 </section>
@@ -419,70 +444,95 @@
         <div class="about-grid fade-up">
             <div>
                 <div class="about-card" style="margin-bottom:1.5rem">
+                    <h3>// Profile</h3>
+                    <p class="about-lead">
+                        I build production-grade machine learning systems — from NLP and forecasting
+                        pipelines to agentic AI and RAG workflows — that turn analytical outputs into
+                        measurable business outcomes.
+                    </p>
+                    <p class="about-lead">
+                        My work spans the full lifecycle: data engineering and ETL/ELT on Snowflake and
+                        distributed platforms, model deployment and drift monitoring with MLOps, A/B
+                        experimentation, and executive-ready reporting aligned to enterprise KPIs.
+                    </p>
+                </div>
+                <div class="about-card" style="margin-bottom:1.5rem">
                     <h3>// Education</h3>
                     <div class="edu-item">
                         <h4>M.S. in Computer Science</h4>
-                        <p>St. Cloud State University, MN, USA</p>
-                        <span class="year">2025</span>
+                        <p>St. Cloud State University · MN, United States</p>
+                        <span class="field">Master of Science</span>
                     </div>
                     <div class="edu-item">
                         <h4>B.Tech in Computer Science & Engineering</h4>
-                        <p>Jawaharlal Nehru Technological University, Hyderabad, India</p>
-                        <span class="year">2019</span>
+                        <p>Jawaharlal Nehru Technological University · Hyderabad, India</p>
+                        <span class="field">Bachelor of Technology</span>
                     </div>
                 </div>
                 <div class="about-card">
                     <h3>// Contact</h3>
                     <div style="display:flex;flex-direction:column;gap:0.75rem">
-                        <div><span style="color:var(--muted);font-size:0.82rem;font-family:var(--mono)">EMAIL</span><br><a href="mailto:rohith.g@mymailjob.com" style="color:var(--text);text-decoration:none;font-size:0.9rem">rohith.g@mymailjob.com</a></div>
+                        <div><span style="color:var(--muted);font-size:0.82rem;font-family:var(--mono)">EMAIL</span><br><a href="mailto:sai.r@mycareersjobs.com" style="color:var(--text);text-decoration:none;font-size:0.9rem">sai.r@mycareersjobs.com</a></div>
                         <div><span style="color:var(--muted);font-size:0.82rem;font-family:var(--mono)">PHONE</span><br><span style="font-size:0.9rem">+1 (919) 885-9891</span></div>
                         <div><span style="color:var(--muted);font-size:0.82rem;font-family:var(--mono)">LOCATION</span><br><span style="font-size:0.9rem">Minnesota, United States</span></div>
                         <div><a href="https://www.linkedin.com/in/rohith-sai-gude-18963a172/" target="_blank" style="color:var(--accent);text-decoration:none;font-size:0.9rem;font-family:var(--mono)">→ LinkedIn Profile</a></div>
                     </div>
                 </div>
             </div>
-            <div class="about-card skills-section">
+            <div id="skills" class="about-card">
                 <h3>// Technical Skills</h3>
                 <div class="skills-grid">
                     <div class="skill-group">
-                        <h4>Programming & Data</h4>
+                        <h4>Programming & Data Engineering</h4>
                         <div class="tags">
                             <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">R</span>
                             <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">Scikit-learn</span>
-                            <span class="tag">TensorFlow</span>
+                            <span class="tag">TensorFlow</span><span class="tag">Snowflake</span><span class="tag">Airflow</span>
+                            <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">ETL/ELT</span>
+                            <span class="tag">API Integration</span>
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>ML & AI</h4>
+                        <h4>Machine Learning & Modeling</h4>
                         <div class="tags">
-                            <span class="tag">NLP</span><span class="tag">Time Series</span><span class="tag">Ensemble Models</span>
-                            <span class="tag">A/B Testing</span><span class="tag">RAG</span><span class="tag">Bayesian Methods</span>
+                            <span class="tag">Supervised / Unsupervised ML</span><span class="tag">Time Series Forecasting</span>
+                            <span class="tag">Ensemble Methods</span><span class="tag">Feature Engineering</span>
+                            <span class="tag">Hyperparameter Optimization</span><span class="tag">Drift Monitoring</span>
+                            <span class="tag">NLP</span><span class="tag">Recommender Systems</span><span class="tag">A/B Testing</span>
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Cloud & MLOps</h4>
+                        <h4>Statistical & Quantitative Analysis</h4>
+                        <div class="tags">
+                            <span class="tag">Statistical Inference</span><span class="tag">Regression</span>
+                            <span class="tag">Classification</span><span class="tag">Hypothesis Testing</span>
+                            <span class="tag">Probability Modeling</span><span class="tag">Bayesian Methods</span>
+                            <span class="tag">Multivariate Analysis</span><span class="tag">Predictive Analytics</span>
+                        </div>
+                    </div>
+                    <div class="skill-group">
+                        <h4>Cloud Platforms & MLOps</h4>
                         <div class="tags">
                             <span class="tag">AWS</span><span class="tag">GCP</span><span class="tag">Docker</span>
-                            <span class="tag">Kubernetes</span><span class="tag">MLflow</span><span class="tag">CI/CD</span><span class="tag">Airflow</span>
+                            <span class="tag">Kubernetes</span><span class="tag">MLflow</span><span class="tag">CI/CD</span>
+                            <span class="tag">Model Versioning</span><span class="tag">Monitoring & Logging</span>
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Data Engineering</h4>
+                        <h4>Big Data & GenAI</h4>
                         <div class="tags">
-                            <span class="tag">Snowflake</span><span class="tag">Spark</span><span class="tag">Databricks</span>
-                            <span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">ETL/ELT</span>
+                            <span class="tag">Spark</span><span class="tag">Databricks</span><span class="tag">Hadoop</span>
+                            <span class="tag">RAG</span><span class="tag">LangChain</span><span class="tag">LangGraph</span>
+                            <span class="tag">Pinecone</span><span class="tag">ChromaDB</span><span class="tag">FAISS</span>
                         </div>
                     </div>
                     <div class="skill-group">
-                        <h4>Visualization</h4>
+                        <h4>Visualization & Business</h4>
                         <div class="tags">
-                            <span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">Python Viz</span>
-                        </div>
-                    </div>
-                    <div class="skill-group">
-                        <h4>Big Data</h4>
-                        <div class="tags">
-                            <span class="tag">Hadoop</span><span class="tag">Distributed Computing</span>
+                            <span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">KPI Frameworks</span>
+                            <span class="tag">Forecasting</span><span class="tag">Customer Segmentation</span>
+                            <span class="tag">Churn Prediction</span><span class="tag">Pricing Analytics</span>
+                            <span class="tag">ROI Analysis</span>
                         </div>
                     </div>
                 </div>
@@ -509,20 +559,22 @@
                     </div>
                     <div class="exp-company"><strong>Intuit</strong> &nbsp;·&nbsp; USA</div>
                     <ul class="exp-list">
-                        <li>Directed scalable ML pipelines using Python, SQL, Airflow, and cloud services, supporting financial intelligence initiatives exceeding <strong>$120M in annual revenue impact</strong>.</li>
-                        <li>Applied advanced NLP for customer feedback classification, raising operational response efficiency by <strong>31%</strong>.</li>
-                        <li>Tuned ensemble models to achieve over <strong>90% precision and recall</strong> for risk analytics.</li>
-                        <li>Implemented automated drift monitoring and statistical validation, avoiding ~<strong>$8.5M in annual revenue risk</strong>.</li>
-                        <li>Deployed ML models using Docker, Kubernetes, and MLflow with controlled versioning and reproducibility.</li>
-                        <li>Streamlined CI/CD pipelines, reducing release cycles to under <strong>48 hours</strong>.</li>
-                        <li>Conducted A/B experiments on pricing and feature impact, driving a <strong>14% increase in customer conversion rates</strong>.</li>
-                        <li>Engineered enterprise-grade ETL/ELT workflows on Snowflake, cutting data processing latency by <strong>38%</strong>.</li>
+                        <li>Built scalable machine learning pipelines using Python, SQL, Airflow, and cloud services supporting financial intelligence initiatives exceeding <strong>$119.8M in annual revenue impact</strong>.</li>
+                        <li>Applied advanced NLP techniques for customer feedback classification, raising operational response efficiency by <strong>31%</strong>.</li>
+                        <li>Implemented automated drift monitoring and statistical validation, avoiding approximately <strong>$8.5M in annual revenue risk</strong>.</li>
+                        <li>Developed agentic AI workflows improving customer support automation and decision accuracy across financial service operations.</li>
+                        <li>Implemented RAG pipelines enabling secure knowledge retrieval and contextual responses for internal tools at scale.</li>
+                        <li>Streamlined CI/CD pipelines for model deployment and retraining, reducing release cycles to under <strong>48 hours</strong>.</li>
+                        <li>Conducted A/B experiments to measure pricing and feature impact, driving a <strong>14% increase in customer conversion rates</strong>.</li>
+                        <li>Applied Bayesian inference and multivariate analysis to quantify uncertainty and support financial decision-making.</li>
+                        <li>Structured enterprise-grade ETL/ELT workflows across Snowflake and distributed platforms, cutting data processing latency by <strong>38%</strong>.</li>
+                        <li>Translated analytical outputs into executive dashboards using Tableau aligned with enterprise KPI frameworks, ensuring data governance and compliance with US regulatory standards.</li>
                     </ul>
                     <div class="tech-tags">
                         <span class="tech-tag">Python</span><span class="tech-tag">SQL</span><span class="tech-tag">NLP</span>
-                        <span class="tech-tag">Airflow</span><span class="tech-tag">Snowflake</span><span class="tech-tag">Docker</span>
-                        <span class="tech-tag">Kubernetes</span><span class="tech-tag">MLflow</span><span class="tech-tag">Tableau</span>
-                        <span class="tech-tag">A/B Testing</span><span class="tech-tag">CI/CD</span>
+                        <span class="tech-tag">Airflow</span><span class="tech-tag">Snowflake</span><span class="tech-tag">RAG</span>
+                        <span class="tech-tag">Agentic AI</span><span class="tech-tag">MLflow</span><span class="tech-tag">Tableau</span>
+                        <span class="tech-tag">A/B Testing</span><span class="tech-tag">CI/CD</span><span class="tech-tag">Bayesian</span>
                     </div>
                 </div>
             </div>
@@ -537,17 +589,19 @@
                     </div>
                     <div class="exp-company"><strong>Borland Software</strong> &nbsp;·&nbsp; India</div>
                     <ul class="exp-list">
-                        <li>Built predictive churn and customer segmentation models, contributing to a <strong>19% reduction in customer attrition</strong>.</li>
+                        <li>Delivered predictive churn and customer segmentation models, contributing to a <strong>19% reduction in customer attrition</strong>.</li>
+                        <li>Applied regression and classification techniques to support pricing analytics and revenue optimization for enterprise clients.</li>
                         <li>Processed high-volume datasets using Spark and Databricks, accelerating distributed computations by <strong>45%</strong>.</li>
-                        <li>Implemented NLP-driven text mining, improving document classification by <strong>33%</strong>.</li>
-                        <li>Supported marketing mix modeling and ROI analysis, improving campaign effectiveness by <strong>22%</strong>.</li>
-                        <li>Transitioned analytics workloads to cloud-ready architectures, reducing costs by <strong>28%</strong>.</li>
-                        <li>Applied regression, classification, and hypothesis testing to guide leadership decisions.</li>
+                        <li>Executed statistical inference and hypothesis testing to validate business hypotheses and guide leadership decisions.</li>
+                        <li>Built NLP-driven text mining solutions to improve document classification and internal knowledge retrieval by <strong>33%</strong>.</li>
+                        <li>Automated data ingestion pipelines integrating APIs, JSON, and relational databases, reducing manual processing effort.</li>
+                        <li>Assessed model robustness through cross-validation and performance diagnostics to ensure production reliability.</li>
+                        <li>Led transition of analytics workloads to cloud-ready architectures, improving scalability and reducing costs by <strong>28%</strong>.</li>
                     </ul>
                     <div class="tech-tags">
                         <span class="tech-tag">Python</span><span class="tech-tag">Spark</span><span class="tech-tag">Databricks</span>
-                        <span class="tech-tag">NLP</span><span class="tech-tag">Scikit-learn</span><span class="tech-tag">Tableau</span>
-                        <span class="tech-tag">SQL</span><span class="tech-tag">GitHub</span>
+                        <span class="tech-tag">NLP</span><span class="tech-tag">Scikit-learn</span><span class="tech-tag">SQL</span>
+                        <span class="tech-tag">GitHub</span><span class="tech-tag">Linux</span>
                     </div>
                 </div>
             </div>
@@ -561,42 +615,60 @@
     <div class="container">
         <div class="section-label">Work</div>
         <h2 class="section-title">Featured Projects</h2>
-        <div class="divider"></div>
+        <p class="section-sub">Applied AI systems spanning agentic workflows, retrieval-augmented generation, and enterprise knowledge automation.</p>
         <div class="projects-grid fade-up">
 
             <div class="proj-card">
-                <div class="proj-icon">🧠</div>
-                <h3>Fake News Detection System</h3>
-                <p>Text classification system using Python and scikit-learn with advanced NLP techniques. Achieved <strong>96% detection accuracy</strong> using TF-IDF feature engineering and ensemble classifiers.</p>
+                <div class="proj-icon">🤖</div>
+                <h3>Autonomous Customer Support Agent</h3>
+                <p>An AI-powered support agent combining RAG with agentic AI to retrieve knowledge and execute real-world actions.</p>
+                <ul class="proj-list">
+                    <li>Retrieves knowledge base data and executes actions including ticket creation and status updates.</li>
+                    <li>Integrates CRM and ticketing systems via REST APIs for real-world task execution.</li>
+                    <li>Conversation memory and context tracking for improved interactions.</li>
+                    <li>Reduced average response time by <strong>70%</strong> and improved customer satisfaction.</li>
+                </ul>
                 <div class="tech-tags" style="margin-bottom:1rem">
-                    <span class="tech-tag">Python</span><span class="tech-tag">scikit-learn</span><span class="tech-tag">NLP</span><span class="tech-tag">TF-IDF</span>
+                    <span class="tech-tag">Agentic AI</span><span class="tech-tag">RAG</span><span class="tech-tag">REST APIs</span><span class="tech-tag">LLM</span>
                 </div>
                 <div class="proj-links">
-                    <a href="#" class="proj-link">GitHub →</a>
+                    <a href="https://github.com/Ro5f6" target="_blank" class="proj-link">GitHub →</a>
                 </div>
             </div>
 
             <div class="proj-card">
-                <div class="proj-icon">📦</div>
-                <h3>AI-Powered Inventory Management</h3>
-                <p>Cloud-based inventory app integrating machine learning for demand forecasting, optimizing inventory turnover and supply chain efficiency at scale.</p>
+                <div class="proj-icon">📄</div>
+                <h3>RAG-Based Intelligent Document Search</h3>
+                <p>A Retrieval-Augmented Generation system for intelligent document querying using LLMs and vector databases.</p>
+                <ul class="proj-list">
+                    <li>Ingestion pipelines processing PDFs, Word docs, and web content with Python and LangChain.</li>
+                    <li>OpenAI embeddings stored in Pinecone for efficient similarity search.</li>
+                    <li>Semantic search API grounding LLM responses with relevant context.</li>
+                    <li>Improved answer accuracy by <strong>40%</strong>; deployed on AWS Lambda, S3, and API Gateway.</li>
+                </ul>
                 <div class="tech-tags" style="margin-bottom:1rem">
-                    <span class="tech-tag">React</span><span class="tech-tag">Node.js</span><span class="tech-tag">Firebase</span><span class="tech-tag">ML Forecasting</span>
+                    <span class="tech-tag">LangChain</span><span class="tech-tag">Pinecone</span><span class="tech-tag">OpenAI</span><span class="tech-tag">AWS</span>
                 </div>
                 <div class="proj-links">
-                    <a href="#" class="proj-link">GitHub →</a>
+                    <a href="https://github.com/Ro5f6" target="_blank" class="proj-link">GitHub →</a>
                 </div>
             </div>
 
             <div class="proj-card">
-                <div class="proj-icon">💳</div>
-                <h3>Flashcard Generator with Payments</h3>
-                <p>Full-stack flashcard application with Stripe payment integration. Engineered backend API interactions and frontend data synchronization for seamless UX.</p>
+                <div class="proj-icon">💬</div>
+                <h3>Enterprise Knowledge Chatbot</h3>
+                <p>An enterprise chatbot answering internal queries from company knowledge base documents with a React frontend.</p>
+                <ul class="proj-list">
+                    <li>OpenAI GPT models integrated with vector search for context-aware responses.</li>
+                    <li>Chunking, indexing, and retrieval strategies to reduce hallucinations.</li>
+                    <li>Responsive React.js frontend for real-time chat, with access control for sensitive documents.</li>
+                    <li>Reduced manual support queries by <strong>60%</strong> through automated knowledge retrieval.</li>
+                </ul>
                 <div class="tech-tags" style="margin-bottom:1rem">
-                    <span class="tech-tag">Next.js</span><span class="tech-tag">Firebase</span><span class="tech-tag">Stripe</span>
+                    <span class="tech-tag">OpenAI</span><span class="tech-tag">Vector DB</span><span class="tech-tag">React</span><span class="tech-tag">RAG</span>
                 </div>
                 <div class="proj-links">
-                    <a href="#" class="proj-link">GitHub →</a>
+                    <a href="https://github.com/Ro5f6" target="_blank" class="proj-link">GitHub →</a>
                 </div>
             </div>
 
@@ -620,7 +692,7 @@
                         <div class="contact-icon">📧</div>
                         <div class="contact-text">
                             <h4>Email</h4>
-                            <a href="mailto:rohith.g@mymailjob.com">rohith.g@mymailjob.com</a>
+                            <a href="mailto:sai.r@mycareersjobs.com">sai.r@mycareersjobs.com</a>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -646,20 +718,20 @@
                     </div>
                 </div>
             </div>
-            <div class="contact-form">
-                <input type="text" class="form-input" placeholder="Your Name">
-                <input type="email" class="form-input" placeholder="Your Email">
-                <input type="text" class="form-input" placeholder="Subject">
-                <textarea class="form-textarea" placeholder="Your Message"></textarea>
-                <button onclick="this.textContent='Message Sent ✓';this.style.background='#00c851'" class="btn-primary" style="width:fit-content;border:none;cursor:pointer">Send Message →</button>
-            </div>
+            <form class="contact-form" id="contact-form">
+                <input type="text" class="form-input" id="cf-name" placeholder="Your Name" required>
+                <input type="email" class="form-input" id="cf-email" placeholder="Your Email" required>
+                <input type="text" class="form-input" id="cf-subject" placeholder="Subject">
+                <textarea class="form-textarea" id="cf-message" placeholder="Your Message" required></textarea>
+                <button type="submit" class="btn-primary" style="width:fit-content;border:none;cursor:pointer">Send Message →</button>
+            </form>
         </div>
     </div>
 </section>
 
 <!-- Footer -->
 <footer>
-    <p>© 2025 Rohith Sai Gude &nbsp;·&nbsp; AI Engineer at <a href="https://www.intuit.com" target="_blank">Intuit</a> &nbsp;·&nbsp;
+    <p>© 2026 Rohith Sai Gude &nbsp;·&nbsp; AI Engineer at <a href="https://www.intuit.com" target="_blank">Intuit</a> &nbsp;·&nbsp;
     <a href="https://github.com/Ro5f6" target="_blank">GitHub</a> &nbsp;·&nbsp;
     <a href="https://www.linkedin.com/in/rohith-sai-gude-18963a172/" target="_blank">LinkedIn</a></p>
 </footer>
@@ -679,10 +751,40 @@
     }, { threshold: 0.08 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-    // Navbar shadow on scroll
+    // Scroll progress bar + navbar shadow
+    const progress = document.getElementById('scroll-progress');
+    const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
-        document.getElementById('navbar').style.boxShadow =
-            window.scrollY > 40 ? '0 4px 32px rgba(0,0,0,0.4)' : 'none';
+        const h = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+        navbar.style.boxShadow = window.scrollY > 40 ? '0 4px 32px rgba(0,0,0,0.4)' : 'none';
+    });
+
+    // Active section highlighting
+    const navMap = {};
+    document.querySelectorAll('.nav-links a').forEach(a => { navMap[a.getAttribute('href').slice(1)] = a; });
+    const sectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting && navMap[e.target.id]) {
+                Object.values(navMap).forEach(a => a.classList.remove('active'));
+                navMap[e.target.id].classList.add('active');
+            }
+        });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+    ['home','about','skills','experience','projects','contact'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) sectionObserver.observe(el);
+    });
+
+    // Contact form -> compose email
+    document.getElementById('contact-form').addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        const name = document.getElementById('cf-name').value;
+        const email = document.getElementById('cf-email').value;
+        const subject = document.getElementById('cf-subject').value || 'Portfolio inquiry';
+        const message = document.getElementById('cf-message').value;
+        const body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
+        window.location.href = 'mailto:sai.r@mycareersjobs.com?subject=' + encodeURIComponent(subject) + '&body=' + body;
     });
 </script>
 </body>
